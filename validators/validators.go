@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/locales/en"
 	"github.com/go-playground/locales/zh"
@@ -41,11 +42,11 @@ func ValidatorInit(locale string) error {
 		return errors.New("类型断言失败")
 	}
 }
-func Translate(err error) map[string][]string {
-	var result = make(map[string][]string)
+func Translate(err error) gin.H {
+	var result = gin.H{}
 	validationErrors := err.(validator.ValidationErrors)
 	for _, v := range validationErrors {
-		result[v.Field()] = append(result[v.Field()], v.Translate(Trans))
+		result[v.Field()] = v.Translate(Trans)
 	}
 	return result
 }
