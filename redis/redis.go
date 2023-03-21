@@ -46,7 +46,7 @@ func RPop(key string) interface{} {
 }
 
 // BRPop list取出数据,堵塞
-func BRPop(key string) interface{} {
-	result, _ := RedisCache.BRPop(60*time.Second, key).Result()
-	return result
+func BRPop(key string) (interface{}, error) {
+	result, err := RedisCache.BRPop(6*time.Second, key).Result()
+	return result, err
 }

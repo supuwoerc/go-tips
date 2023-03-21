@@ -33,7 +33,10 @@ func main() {
 	//str := RPop("redis-list")
 	//fmt.Printf("%v", str)
 	for {
-		ret := BRPop("redis-list")
+		ret, err := BRPop("redis-list")
+		if err != nil {
+			break
+		}
 		fmt.Printf("%v\n", ret)
 	}
 
