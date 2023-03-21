@@ -29,15 +29,21 @@ func main() {
 	_ = json.Unmarshal([]byte(getResult), &userResult)
 	fmt.Println(userResult)
 	fmt.Println("---redis操作list---")
-	_ = LPush("redis-list", "A", "B", 1, 2, 3, "C")
-	//str := RPop("redis-list")
-	//fmt.Printf("%v", str)
+	_ = LPush("redis-list1", "A", "B", 1, 2, 3, "C")
+	_ = LPush("redis-list2", "A", "B", 1, 2, 3, "C")
+	str := RPop("redis-list1")
+	fmt.Printf("%v", str)
+	length, _ := LLen("redis-list1")
+	fmt.Println(length)
+	lRange, _ := LRange("redis-list1", 0, 3)
+	fmt.Println(lRange)
+	fmt.Println("------")
 	for {
-		ret, err := BRPop("redis-list")
+		ret, err := BRPop("redis-list2")
 		if err != nil {
 			break
 		}
-		fmt.Printf("%v\n", ret)
+		fmt.Printf("%v\n", ret[1])
 	}
 
 }

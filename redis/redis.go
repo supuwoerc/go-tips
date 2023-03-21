@@ -46,7 +46,19 @@ func RPop(key string) interface{} {
 }
 
 // BRPop list取出数据,堵塞
-func BRPop(key string) (interface{}, error) {
-	result, err := RedisCache.BRPop(6*time.Second, key).Result()
+func BRPop(key string) ([]string, error) {
+	result, err := RedisCache.BRPop(3*time.Second, key).Result()
+	return result, err
+}
+
+// LLen list长度
+func LLen(key string) (int64, error) {
+	length, err := RedisCache.LLen(key).Result()
+	return length, err
+}
+
+// LRange list长度
+func LRange(key string, s, e int64) ([]string, error) {
+	result, err := RedisCache.LRange(key, s, e).Result()
 	return result, err
 }
