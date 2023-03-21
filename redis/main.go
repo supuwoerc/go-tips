@@ -28,4 +28,9 @@ func main() {
 	getResult, _ := Get("user-struct")
 	_ = json.Unmarshal([]byte(getResult), &userResult)
 	fmt.Println(userResult)
+	fmt.Println("---redis操作list---")
+	_ = LPush("redis-list", "A", "B", 1, 2, 3, "C")
+	str := RPop("redis-list")
+	fmt.Printf("%v", str)
+
 }

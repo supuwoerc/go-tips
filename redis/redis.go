@@ -32,3 +32,15 @@ func Set(key string, value interface{}) error {
 	_, err := RedisCache.Set(key, value, time.Hour*24).Result()
 	return err
 }
+
+// LPush 存储数据到list
+func LPush(key string, value ...interface{}) error {
+	_, err := RedisCache.LPush(key, value...).Result()
+	return err
+}
+
+// RPop list取出数据
+func RPop(key string) interface{} {
+	result, _ := RedisCache.RPop(key).Result()
+	return result
+}
