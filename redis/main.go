@@ -30,7 +30,11 @@ func main() {
 	fmt.Println(userResult)
 	fmt.Println("---redis操作list---")
 	_ = LPush("redis-list", "A", "B", 1, 2, 3, "C")
-	str := RPop("redis-list")
-	fmt.Printf("%v", str)
+	//str := RPop("redis-list")
+	//fmt.Printf("%v", str)
+	for {
+		ret := BRPop("redis-list")
+		fmt.Printf("%v\n", ret)
+	}
 
 }
