@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/go-redis/redis"
 )
 
 type User struct {
@@ -45,5 +46,50 @@ func main() {
 		}
 		fmt.Printf("%v\n", ret[1])
 	}
+	hashKey := "hash-key"
+	setResult, err := HSet(hashKey, "name", "测试名称")
+	fmt.Println(setResult, err)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		get, _ := HGet(hashKey, "name")
+		fmt.Println(get)
+	}
+	exists, _ := HExists(hashKey, "name")
+	fmt.Println(exists)
+	all, _ := HGetAll(hashKey)
+	fmt.Println(all)
+	setKey := "set-key"
+	_, err = SAdd(setKey, 1, 3, 4, 5, 6)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		length, _ := SCard(setKey)
+		fmt.Println(length)
+		fmt.Println(SMembers(setKey))
+	}
+	zSetKey := "z-set"
 
+	_, err = ZAdd(zSetKey, redis.Z{
+		Score:  0,
+		Member: "零分",
+	}, redis.Z{
+		Score:  3,
+		Member: "三分",
+	}, redis.Z{
+		Score:  2,
+		Member: "两分",
+	}, redis.Z{
+		6,
+		"六分",
+	}, redis.Z{
+		Score:  8,
+		Member: "八分",
+	})
+	if err == nil {
+		scores, _ := ZRevRangeWithScores(zSetKey, 0, 2)
+		fmt.Println(scores)
+		_, _ = ZIncrBy(zSetKey, 10, "零分")
+		fmt.Println(ZRevRangeWithScores(zSetKey, 0, 2))
+	}
 }
